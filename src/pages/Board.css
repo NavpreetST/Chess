@@ -1,0 +1,13 @@
+.main-board{
+    /* height: 500px; */
+    width: 615px;
+    border: 2px solid red;
+    /* size: 200%; */
+
+    /* background-color: black; */
+    
+}
+.board-row{
+    display: flex;
+    
+}
