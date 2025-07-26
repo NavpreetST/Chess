@@ -11,3 +11,13 @@
     display: flex;
     
 }
+.square img {
+  width: 75%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* This is the new magic rule */
+.white-piece {
+  filter: invert(1);
+}
