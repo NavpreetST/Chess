@@ -1,19 +1,27 @@
 import {React, useEffect, useState} from 'react'
 import './Board.css'
 import Chess from '../components/ChessBoard'
-import { LoadPositionFromFen } from '../components/logic2'
+import { LoadPositionFromFen } from '../components/logic3'
 
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
   const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-  let Position = null
+  const [fenString, setFenString] = useState(startingFen)
+  const [spareFen, setSpareFen] = useState('')
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const fenStr = spareFen
+    setChessBoard(LoadPositionFromFen(fenStr))
+  }
+
+
   useEffect(() => {
-    Position = LoadPositionFromFen(startingFen)
-    setChessBoard(Position)
+    setChessBoard(LoadPositionFromFen(fenString))
     
     
     
-  },[Position])
+  },[])
   
 
 
@@ -22,6 +30,10 @@ return (
       
       {/* {kdt} */}
       <Chess chessBoard={chessBoard} />
+      <form onSubmit={handleSubmit}>
+        <input type='text' name='fen' value = {spareFen} onChange={(e) => setSpareFen(e.target.value)}/>
+        <input type='submit' value='Submit'/>
+      </form>
       
     </div>
   )

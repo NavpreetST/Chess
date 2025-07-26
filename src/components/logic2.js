@@ -1,4 +1,4 @@
-const fen ="4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
+// const fen ="4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
 export const LoadPositionFromFen = (fen) =>{
 const Piece = {
     None : 0, 

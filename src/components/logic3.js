@@ -1,4 +1,4 @@
-
+export const LoadPositionFromFen = (fen) =>{
 const Piece = {
     None : 0, 
     King : 1,
@@ -23,7 +23,7 @@ const pieceTypeFromSymbol = {
     }
     
     
-const fen = "4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
+// const fen = "4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
 let chessBoard = Array(64).fill(null)
 
 let rank = 7
@@ -70,10 +70,12 @@ for (const rowString of rows) {
     }
     rank--
 };
+return chessBoard;
 
+}
 
 // console.log(rows)
 // console.log(pieceTypeFromSymbol['p'])
 // console.log(Piece.King | Piece.White)
-console.log(chessBoard)
-console.log(chessBoard[28])
+// console.log(chessBoard)
+// console.log(chessBoard[28])
