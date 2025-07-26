@@ -6,18 +6,18 @@ import { LoadPositionFromFen } from '../components/logic3'
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
   const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-  const [fenString, setFenString] = useState(startingFen)
-  const [spareFen, setSpareFen] = useState('')
+
+  const [activeFen, setActiveFen]= useState(startingFen)
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    const fenStr = spareFen
+    const fenStr = activeFen
     setChessBoard(LoadPositionFromFen(fenStr))
   }
 
 
   useEffect(() => {
-    setChessBoard(LoadPositionFromFen(fenString))
+    setChessBoard(LoadPositionFromFen(activeFen))
     
     
     
@@ -26,16 +26,20 @@ const Board = () => {
 
 
 return (
+  <div>
+
   <div className='main-board'>
       
       {/* {kdt} */}
       <Chess chessBoard={chessBoard} />
-      <form onSubmit={handleSubmit}>
-        <input type='text' name='fen' value = {spareFen} onChange={(e) => setSpareFen(e.target.value)}/>
-        <input type='submit' value='Submit'/>
-      </form>
+
       
     </div>
+      <form onSubmit={handleSubmit}>
+        <input type='text' name='fen' value = {activeFen} onChange={(e) => setActiveFen(e.target.value)}/>
+        <input type='submit' value='Submit'/>
+      </form>
+  </div>
   )
 }
 
