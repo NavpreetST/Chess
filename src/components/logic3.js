@@ -28,23 +28,21 @@ let chessBoard = Array(64).fill(null)
 
 let rank = 7
 const rows = fen.split('/')
-console.log(rows)
+// console.log(rows)
 const rows2 = fen.split('')
-console.log(rows2)
+// console.log(rows2)
 let pieceIndex = 0
 
 
     console.log("this is inside the loop for each time")
 for (const rowString of rows) {
-    console.log(rowString )
+    // console.log(rowString )
      let file = 0
       
     for (const char of rowString ){
-    console.log(`Processing char: '${char}' --- Rank: ${rank}, File: ${file}`);
+    // console.log(`Processing char: '${char}' --- Rank: ${rank}, File: ${file}`);
         
-    // let file = 0
-  // Your code inside the loop goes here.
-  // 'piece' is a variable that will hold each item from 'rows'.
+
   
   if(char == ' '){
       return
