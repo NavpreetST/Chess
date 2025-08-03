@@ -52,23 +52,28 @@ switch (index) {
 }
 }
 
-const Square = ({color, piece}) => {
+const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex }) => {
     const squareDimension = "77px"
     const imageSrc = numberToImage(piece)
-    
+
     return (
 
-    <div className='square' style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension} : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension}}>
-        <h1 style={{color: "orange"}}>
-        {imageSrc && <img src = {imageSrc} width = "70%" height = "100%" alt = "chess piece"  />}
+        <div
+            className='square'
+            style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension } : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension }}
+            onDrop={() => onDrop(squareIndex)}
+            onDragOver={onDragOver}
+        >
+            <h1 style={{ color: "orange" }}>
+                {imageSrc && <img src={imageSrc} width="70%" height="100%" alt="chess piece" onDragStart={() => onDragStart(squareIndex)} />}
 
-        </h1>
+            </h1>
 
 
-    </div>)
+        </div>)
 
-    }
-const Chess = ({chessBoard}) => {
+}
+const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart }) => {
     
     console.log(chessBoard)
     const boardVisual = []; 
