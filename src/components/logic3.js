@@ -28,6 +28,7 @@ let chessBoard = Array(64).fill(null)
 const fenParts = fen.split(' ');
 const position = fenParts[0];
 const castlingRights = fenParts[2];
+const enPassantTarget = fenParts[3];
 
 let rank = 7
 const rows = position.split('/')
@@ -71,7 +72,7 @@ for (const rowString of rows) {
     }
     rank--
 };
-return { chessBoard, castlingRights };
+return { chessBoard, castlingRights, enPassantTarget };
 
 }
 

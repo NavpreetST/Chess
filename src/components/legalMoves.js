@@ -11,7 +11,7 @@ const Piece = {
     Black : 16
   }
 
-export const getLegalMoves = (squareIndex, chessBoard, castlingRights) => {
+export const getLegalMoves = (squareIndex, chessBoard, castlingRights, enPassantTarget) => {
   const legalMoves = [];
   const piece = chessBoard[squareIndex];
   const pieceType = piece & 7;
@@ -42,6 +42,14 @@ export const getLegalMoves = (squareIndex, chessBoard, castlingRights) => {
         legalMoves.push(move);
       }
     }
+
+    // En Passant
+    if (enPassantTarget !== null) {
+      if (captureMoves.includes(enPassantTarget)) {
+        legalMoves.push(enPassantTarget);
+      }
+    }
+
   } else if (pieceType === Piece.Knight) {
     const knightMoves = [-17, -15, -10, -6, 6, 10, 15, 17];
 

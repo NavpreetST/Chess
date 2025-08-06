@@ -12,10 +12,11 @@ const Board = () => {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [legalMoves, setLegalMoves] = useState([]);
   const [castlingRights, setCastlingRights] = useState("");
+  const [enPassantTarget, setEnPassantTarget] = useState(null);
 
   const handleSquareClick = (squareIndex) => {
     if (selectedSquare === null) {
-      const moves = getLegalMoves(squareIndex, chessBoard, castlingRights);
+      const moves = getLegalMoves(squareIndex, chessBoard, castlingRights, enPassantTarget);
       if (moves.length > 0) {
         setSelectedSquare(squareIndex);
         setLegalMoves(moves);
@@ -53,16 +54,18 @@ const Board = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    const { chessBoard: newBoard, castlingRights: newCastlingRights } = LoadPositionFromFen(activeFen);
+    const { chessBoard: newBoard, castlingRights: newCastlingRights, enPassantTarget: newEnPassantTarget } = LoadPositionFromFen(activeFen);
     setChessBoard(newBoard);
     setCastlingRights(newCastlingRights);
+    setEnPassantTarget(newEnPassantTarget);
   }
 
 
   useEffect(() => {
-    const { chessBoard: newBoard, castlingRights: newCastlingRights } = LoadPositionFromFen(activeFen);
+    const { chessBoard: newBoard, castlingRights: newCastlingRights, enPassantTarget: newEnPassantTarget } = LoadPositionFromFen(activeFen);
     setChessBoard(newBoard);
     setCastlingRights(newCastlingRights);
+    setEnPassantTarget(newEnPassantTarget);
     
     
     
