@@ -2,6 +2,7 @@ import {React, useEffect, useState} from 'react'
 import './Board.css'
 import Chess from '../components/ChessBoard'
 import { LoadPositionFromFen } from '../components/logic3'
+import { getLegalMoves } from '../components/legalMoves'
 
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
@@ -9,9 +10,12 @@ const Board = () => {
 
   const [activeFen, setActiveFen]= useState(startingFen)
   const [selectedSquare, setSelectedSquare] = useState(null);
+  const [legalMoves, setLegalMoves] = useState([]);
 
   const handleSquareClick = (squareIndex) => {
     setSelectedSquare(squareIndex);
+    const moves = getLegalMoves(squareIndex, chessBoard);
+    setLegalMoves(moves);
   };
   
   const handleSubmit = (e) => {
@@ -40,6 +44,7 @@ return (
         chessBoard={chessBoard} 
         onSquareClick={handleSquareClick}
         selectedSquare={selectedSquare}
+        legalMoves={legalMoves}
       />
 
       

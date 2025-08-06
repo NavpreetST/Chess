@@ -52,14 +52,14 @@ switch (index) {
 }
 }
 
-const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, onSquareClick, isSelected }) => {
+const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, onSquareClick, isSelected, isLegalMove }) => {
     const squareDimension = "77px"
     const imageSrc = numberToImage(piece)
 
     return (
 
         <div
-            className={`square ${isSelected ? 'selected' : ''}`}
+            className={`square ${isSelected ? 'selected' : ''} ${isLegalMove ? 'legal-move' : ''}`}
             style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension } : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension }}
             onDrop={() => onDrop(squareIndex)}
             onDragOver={onDragOver}
@@ -74,7 +74,7 @@ const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, on
         </div>)
 
 }
-const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, selectedSquare }) => {
+const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, selectedSquare, legalMoves }) => {
     
     console.log(chessBoard)
     const boardVisual = []; 
@@ -107,6 +107,7 @@ const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, sel
               squareIndex={squareIndex}
               onSquareClick={onSquareClick}
               isSelected={selectedSquare === squareIndex}
+              isLegalMove={legalMoves.includes(squareIndex)}
             />
           );
         }

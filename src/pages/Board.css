@@ -25,3 +25,7 @@
 .selected {
   background-color: yellow !important;
 }
+
+.legal-move {
+  background-color: green !important;
+}
