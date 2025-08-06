@@ -73,6 +73,25 @@ export const getLegalMoves = (squareIndex, chessBoard) => {
         }
       }
     }
+  } else if (pieceType === Piece.Bishop) {
+    const bishopDirections = [-9, -7, 7, 9];
+
+    for (const direction of bishopDirections) {
+      for (let i = 1; i < 8; i++) {
+        const newIndex = squareIndex + direction * i;
+        if (newIndex < 0 || newIndex >= 64) break;
+
+        const targetPiece = chessBoard[newIndex];
+        if (targetPiece === null) {
+          legalMoves.push(newIndex);
+        } else {
+          if ((targetPiece & 24) !== pieceColor) {
+            legalMoves.push(newIndex);
+          }
+          break;
+        }
+      }
+    }
   }
 
   return legalMoves;
