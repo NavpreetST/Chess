@@ -100,6 +100,10 @@ const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart }) => {
               color={isLightSquare}
               // Later, you will get the piece from your `chessBoard` prop:
               piece={chessBoard[squareIndex]}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+              onDragStart={onDragStart}
+              squareIndex={squareIndex}
             />
           );
         }
