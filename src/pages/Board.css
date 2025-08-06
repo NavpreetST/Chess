@@ -21,3 +21,7 @@
 .white-piece {
   filter: invert(1);
 }
+
+.selected {
+  background-color: yellow !important;
+}

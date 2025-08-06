@@ -52,17 +52,18 @@ switch (index) {
 }
 }
 
-const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex }) => {
+const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, onSquareClick, isSelected }) => {
     const squareDimension = "77px"
     const imageSrc = numberToImage(piece)
 
     return (
 
         <div
-            className='square'
+            className={`square ${isSelected ? 'selected' : ''}`}
             style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension } : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension }}
             onDrop={() => onDrop(squareIndex)}
             onDragOver={onDragOver}
+            onClick={() => onSquareClick(squareIndex)}
         >
             <h1 style={{ color: "orange" }}>
                 {imageSrc && <img src={imageSrc} width="70%" height="100%" alt="chess piece" onDragStart={() => onDragStart(squareIndex)} />}
@@ -73,7 +74,7 @@ const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex }) 
         </div>)
 
 }
-const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart }) => {
+const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, selectedSquare }) => {
     
     console.log(chessBoard)
     const boardVisual = []; 
@@ -104,6 +105,8 @@ const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart }) => {
               onDragOver={onDragOver}
               onDragStart={onDragStart}
               squareIndex={squareIndex}
+              onSquareClick={onSquareClick}
+              isSelected={selectedSquare === squareIndex}
             />
           );
         }

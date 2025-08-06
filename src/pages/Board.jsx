@@ -8,6 +8,11 @@ const Board = () => {
   const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 
   const [activeFen, setActiveFen]= useState(startingFen)
+  const [selectedSquare, setSelectedSquare] = useState(null);
+
+  const handleSquareClick = (squareIndex) => {
+    setSelectedSquare(squareIndex);
+  };
   
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -31,7 +36,11 @@ return (
   <div className='main-board'>
       
       {/* {kdt} */}
-      <Chess chessBoard={chessBoard} />
+      <Chess 
+        chessBoard={chessBoard} 
+        onSquareClick={handleSquareClick}
+        selectedSquare={selectedSquare}
+      />
 
       
     </div>
