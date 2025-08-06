@@ -23,6 +23,25 @@ const Board = () => {
     } else {
       if (legalMoves.includes(squareIndex)) {
         const newChessBoard = [...chessBoard];
+        // Castling logic
+        if (newChessBoard[selectedSquare] === 9 && Math.abs(selectedSquare - squareIndex) === 2) {
+          if (squareIndex === 62) {
+            newChessBoard[61] = newChessBoard[63];
+            newChessBoard[63] = null;
+          } else if (squareIndex === 58) {
+            newChessBoard[59] = newChessBoard[56];
+            newChessBoard[56] = null;
+          }
+        } else if (newChessBoard[selectedSquare] === 17 && Math.abs(selectedSquare - squareIndex) === 2) {
+          if (squareIndex === 6) {
+            newChessBoard[5] = newChessBoard[7];
+            newChessBoard[7] = null;
+          } else if (squareIndex === 2) {
+            newChessBoard[3] = newChessBoard[0];
+            newChessBoard[0] = null;
+          }
+        }
+
         newChessBoard[squareIndex] = newChessBoard[selectedSquare];
         newChessBoard[selectedSquare] = null;
         setChessBoard(newChessBoard);
