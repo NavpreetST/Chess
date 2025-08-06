@@ -42,6 +42,18 @@ export const getLegalMoves = (squareIndex, chessBoard) => {
         legalMoves.push(move);
       }
     }
+  } else if (pieceType === Piece.Knight) {
+    const knightMoves = [-17, -15, -10, -6, 6, 10, 15, 17];
+
+    for (const move of knightMoves) {
+      const newIndex = squareIndex + move;
+      if (newIndex >= 0 && newIndex < 64) {
+        const targetPiece = chessBoard[newIndex];
+        if (targetPiece === null || (targetPiece & 24) !== pieceColor) {
+          legalMoves.push(newIndex);
+        }
+      }
+    }
   }
 
   return legalMoves;
