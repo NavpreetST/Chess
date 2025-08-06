@@ -23,14 +23,14 @@ export const getLegalMoves = (squareIndex, chessBoard, castlingRights, enPassant
 
     // One square forward
     const oneSquareForward = squareIndex + 8 * direction;
-    if (chessBoard[oneSquareForward] === null) {
+    if (!chessBoard[oneSquareForward]) {
       legalMoves.push(oneSquareForward);
     }
 
     // Two squares forward
     if (Math.floor(squareIndex / 8) === startRank) {
       const twoSquaresForward = squareIndex + 16 * direction;
-      if (chessBoard[oneSquareForward] === null && chessBoard[twoSquaresForward] === null) {
+      if (!chessBoard[oneSquareForward] && !chessBoard[twoSquaresForward]) {
         legalMoves.push(twoSquaresForward);
       }
     }
