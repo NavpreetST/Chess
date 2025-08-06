@@ -1,4 +1,48 @@
+const Piece = {
+    None : 0, 
+    King : 1,
+    Pawn : 2,
+    Knight : 3,
+    Bishop : 4,
+    Rook : 5,
+    Queen : 6,
+
+    White : 8, 
+    Black : 16
+  }
+
 export const getLegalMoves = (squareIndex, chessBoard) => {
-  // Placeholder for legal move logic
-  return [];
+  const legalMoves = [];
+  const piece = chessBoard[squareIndex];
+  const pieceType = piece & 7;
+  const pieceColor = piece & 24;
+
+  if (pieceType === Piece.Pawn) {
+    const direction = pieceColor === Piece.White ? -1 : 1;
+    const startRank = pieceColor === Piece.White ? 6 : 1;
+
+    // One square forward
+    const oneSquareForward = squareIndex + 8 * direction;
+    if (chessBoard[oneSquareForward] === null) {
+      legalMoves.push(oneSquareForward);
+    }
+
+    // Two squares forward
+    if (Math.floor(squareIndex / 8) === startRank) {
+      const twoSquaresForward = squareIndex + 16 * direction;
+      if (chessBoard[oneSquareForward] === null && chessBoard[twoSquaresForward] === null) {
+        legalMoves.push(twoSquaresForward);
+      }
+    }
+
+    // Captures
+    const captureMoves = [squareIndex + 7 * direction, squareIndex + 9 * direction];
+    for (const move of captureMoves) {
+      if (chessBoard[move] !== null && (chessBoard[move] & 24) !== pieceColor) {
+        legalMoves.push(move);
+      }
+    }
+  }
+
+  return legalMoves;
 };
