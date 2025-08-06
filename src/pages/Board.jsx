@@ -16,10 +16,17 @@ const Board = () => {
 
   const handleSquareClick = (squareIndex) => {
     if (selectedSquare === null) {
-      const moves = getLegalMoves(squareIndex, chessBoard, castlingRights, enPassantTarget);
-      if (moves.length > 0) {
-        setSelectedSquare(squareIndex);
-        setLegalMoves(moves);
+      const piece = chessBoard[squareIndex];
+      console.log(`Clicked square ${squareIndex}, piece: ${piece}`);
+      
+      if (piece !== null) {
+        const moves = getLegalMoves(squareIndex, chessBoard, castlingRights, enPassantTarget);
+        console.log(`Legal moves for piece ${piece} at square ${squareIndex}:`, moves);
+        
+        if (moves.length > 0) {
+          setSelectedSquare(squareIndex);
+          setLegalMoves(moves);
+        }
       }
     } else {
       if (legalMoves.includes(squareIndex)) {

@@ -18,8 +18,8 @@ export const getLegalMoves = (squareIndex, chessBoard, castlingRights, enPassant
   const pieceColor = piece & 24;
 
   if (pieceType === Piece.Pawn) {
-    const direction = pieceColor === Piece.White ? -1 : 1;
-    const startRank = pieceColor === Piece.White ? 6 : 1;
+    const direction = pieceColor === Piece.White ? 1 : -1;
+    const startRank = pieceColor === Piece.White ? 1 : 6;
     const currentRank = Math.floor(squareIndex / 8);
     const currentFile = squareIndex % 8;
 
