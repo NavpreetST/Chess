@@ -25,9 +25,12 @@ const pieceTypeFromSymbol = {
     
 // const fen = "4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
 let chessBoard = Array(64).fill(null)
+const fenParts = fen.split(' ');
+const position = fenParts[0];
+const castlingRights = fenParts[2];
 
 let rank = 7
-const rows = fen.split('/')
+const rows = position.split('/')
 // console.log(rows)
 const rows2 = fen.split('')
 // console.log(rows2)
@@ -68,7 +71,7 @@ for (const rowString of rows) {
     }
     rank--
 };
-return chessBoard;
+return { chessBoard, castlingRights };
 
 }
 

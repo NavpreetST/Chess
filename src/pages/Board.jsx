@@ -6,15 +6,16 @@ import { getLegalMoves } from '../components/legalMoves'
 
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
-  const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+  const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
   const [activeFen, setActiveFen]= useState(startingFen)
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [legalMoves, setLegalMoves] = useState([]);
+  const [castlingRights, setCastlingRights] = useState("");
 
   const handleSquareClick = (squareIndex) => {
     if (selectedSquare === null) {
-      const moves = getLegalMoves(squareIndex, chessBoard);
+      const moves = getLegalMoves(squareIndex, chessBoard, castlingRights);
       if (moves.length > 0) {
         setSelectedSquare(squareIndex);
         setLegalMoves(moves);
@@ -33,13 +34,16 @@ const Board = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    const fenStr = activeFen
-    setChessBoard(LoadPositionFromFen(fenStr))
+    const { chessBoard: newBoard, castlingRights: newCastlingRights } = LoadPositionFromFen(activeFen);
+    setChessBoard(newBoard);
+    setCastlingRights(newCastlingRights);
   }
 
 
   useEffect(() => {
-    setChessBoard(LoadPositionFromFen(activeFen))
+    const { chessBoard: newBoard, castlingRights: newCastlingRights } = LoadPositionFromFen(activeFen);
+    setChessBoard(newBoard);
+    setCastlingRights(newCastlingRights);
     
     
     

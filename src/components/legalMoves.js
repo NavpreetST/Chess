@@ -11,7 +11,7 @@ const Piece = {
     Black : 16
   }
 
-export const getLegalMoves = (squareIndex, chessBoard) => {
+export const getLegalMoves = (squareIndex, chessBoard, castlingRights) => {
   const legalMoves = [];
   const piece = chessBoard[squareIndex];
   const pieceType = piece & 7;
@@ -121,6 +121,23 @@ export const getLegalMoves = (squareIndex, chessBoard) => {
         if (targetPiece === null || (targetPiece & 24) !== pieceColor) {
           legalMoves.push(newIndex);
         }
+      }
+    }
+
+    // Castling
+    if (pieceColor === Piece.White) {
+      if (castlingRights.includes('K') && chessBoard[61] === null && chessBoard[62] === null) {
+        legalMoves.push(62);
+      }
+      if (castlingRights.includes('Q') && chessBoard[57] === null && chessBoard[58] === null && chessBoard[59] === null) {
+        legalMoves.push(58);
+      }
+    } else {
+      if (castlingRights.includes('k') && chessBoard[5] === null && chessBoard[6] === null) {
+        legalMoves.push(6);
+      }
+      if (castlingRights.includes('q') && chessBoard[1] === null && chessBoard[2] === null && chessBoard[3] === null) {
+        legalMoves.push(2);
       }
     }
   }
