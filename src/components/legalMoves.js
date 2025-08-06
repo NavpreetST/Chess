@@ -53,9 +53,19 @@ export const getLegalMoves = (squareIndex, chessBoard, castlingRights, enPassant
   } else if (pieceType === Piece.Knight) {
     const knightMoves = [-17, -15, -10, -6, 6, 10, 15, 17];
 
+    const currentRank = Math.floor(squareIndex / 8);
+    const currentFile = squareIndex % 8;
+
     for (const move of knightMoves) {
       const newIndex = squareIndex + move;
-      if (newIndex >= 0 && newIndex < 64) {
+      const newRank = Math.floor(newIndex / 8);
+      const newFile = newIndex % 8;
+
+      // Check if the move is within the board boundaries and does not wrap around
+      if (newIndex >= 0 && newIndex < 64 &&
+          (Math.abs(currentRank - newRank) === 1 && Math.abs(currentFile - newFile) === 2 ||
+           Math.abs(currentRank - newRank) === 2 && Math.abs(currentFile - newFile) === 1)) {
+
         const targetPiece = chessBoard[newIndex];
         if (targetPiece === null || (targetPiece & 24) !== pieceColor) {
           legalMoves.push(newIndex);
