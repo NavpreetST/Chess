@@ -24,6 +24,12 @@ const Board = () => {
     } else {
       if (legalMoves.includes(squareIndex)) {
         const newChessBoard = [...chessBoard];
+        // En Passant
+        if ((newChessBoard[selectedSquare] & 7) === 2 && squareIndex === enPassantTarget) {
+          const capturedPawnIndex = enPassantTarget + ( (newChessBoard[selectedSquare] & 8) === 8 ? 8 : -8);
+          newChessBoard[capturedPawnIndex] = null;
+        }
+
         // Castling logic
         if (newChessBoard[selectedSquare] === 9 && Math.abs(selectedSquare - squareIndex) === 2) {
           if (squareIndex === 62) {
