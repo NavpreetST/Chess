@@ -111,6 +111,18 @@ export const getLegalMoves = (squareIndex, chessBoard) => {
         }
       }
     }
+  } else if (pieceType === Piece.King) {
+    const kingMoves = [-9, -8, -7, -1, 1, 7, 8, 9];
+
+    for (const move of kingMoves) {
+      const newIndex = squareIndex + move;
+      if (newIndex >= 0 && newIndex < 64) {
+        const targetPiece = chessBoard[newIndex];
+        if (targetPiece === null || (targetPiece & 24) !== pieceColor) {
+          legalMoves.push(newIndex);
+        }
+      }
+    }
   }
 
   return legalMoves;
