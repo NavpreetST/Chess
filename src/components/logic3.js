@@ -27,8 +27,16 @@ const pieceTypeFromSymbol = {
 let chessBoard = Array(64).fill(null)
 const fenParts = fen.split(' ');
 const position = fenParts[0];
-const castlingRights = fenParts[2];
-const enPassantTarget = fenParts[3];
+const castlingRights = fenParts[2] || '';
+const enPassantTargetStr = fenParts[3] || '-';
+
+// Convert en passant target from algebraic notation to square index
+let enPassantTarget = null;
+if (enPassantTargetStr !== '-' && enPassantTargetStr.length === 2) {
+  const file = enPassantTargetStr.charCodeAt(0) - 'a'.charCodeAt(0);
+  const rank = parseInt(enPassantTargetStr[1]) - 1;
+  enPassantTarget = rank * 8 + file;
+}
 
 let rank = 7
 const rows = position.split('/')

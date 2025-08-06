@@ -2,7 +2,7 @@ import {React, useEffect, useState} from 'react'
 import './Board.css'
 import Chess from '../components/ChessBoard'
 import { LoadPositionFromFen } from '../components/logic3'
-import { getLegalMoves } from '../components/legalMoves'
+import { getLegalMoves, Piece } from '../components/legalMoves'
 
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
@@ -49,7 +49,23 @@ const Board = () => {
           }
         }
 
-        newChessBoard[squareIndex] = newChessBoard[selectedSquare];
+        const movedPiece = newChessBoard[selectedSquare];
+        const isPawn = (movedPiece & 7) === Piece.Pawn;
+        const isWhite = (movedPiece & 24) === Piece.White;
+
+        // Handle en passant target
+        if (isPawn && Math.abs(selectedSquare - squareIndex) === 16) {
+          setEnPassantTarget(selectedSquare + (isWhite ? -8 : 8));
+        } else {
+          setEnPassantTarget(null);
+        }
+
+        // Handle pawn promotion
+        if (isPawn && ((isWhite && Math.floor(squareIndex / 8) === 0) || (!isWhite && Math.floor(squareIndex / 8) === 7))) {
+          newChessBoard[squareIndex] = isWhite ? (Piece.Queen | Piece.White) : (Piece.Queen | Piece.Black);
+        } else {
+          newChessBoard[squareIndex] = movedPiece;
+        }
         newChessBoard[selectedSquare] = null;
         setChessBoard(newChessBoard);
       }

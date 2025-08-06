@@ -1,4 +1,4 @@
-const Piece = {
+export const Piece = {
     None : 0, 
     King : 1,
     Pawn : 2,
@@ -20,32 +20,49 @@ export const getLegalMoves = (squareIndex, chessBoard, castlingRights, enPassant
   if (pieceType === Piece.Pawn) {
     const direction = pieceColor === Piece.White ? -1 : 1;
     const startRank = pieceColor === Piece.White ? 6 : 1;
+    const currentRank = Math.floor(squareIndex / 8);
+    const currentFile = squareIndex % 8;
 
     // One square forward
     const oneSquareForward = squareIndex + 8 * direction;
-    if (!chessBoard[oneSquareForward]) {
+    if (oneSquareForward >= 0 && oneSquareForward < 64 && chessBoard[oneSquareForward] === null) {
       legalMoves.push(oneSquareForward);
-    }
 
-    // Two squares forward
-    if (Math.floor(squareIndex / 8) === startRank) {
-      const twoSquaresForward = squareIndex + 16 * direction;
-      if (!chessBoard[oneSquareForward] && !chessBoard[twoSquaresForward]) {
-        legalMoves.push(twoSquaresForward);
+      // Two squares forward (only if one square forward is empty)
+      if (currentRank === startRank) {
+        const twoSquaresForward = squareIndex + 16 * direction;
+        if (twoSquaresForward >= 0 && twoSquaresForward < 64 && chessBoard[twoSquaresForward] === null) {
+          legalMoves.push(twoSquaresForward);
+        }
       }
     }
 
-    // Captures
-    const captureMoves = [squareIndex + 7 * direction, squareIndex + 9 * direction];
-    for (const move of captureMoves) {
-      if (chessBoard[move] !== null && (chessBoard[move] & 24) !== pieceColor) {
-        legalMoves.push(move);
+    // Diagonal captures
+    const captureOffsets = [7 * direction, 9 * direction];
+    for (let i = 0; i < captureOffsets.length; i++) {
+      const captureSquare = squareIndex + captureOffsets[i];
+      const captureRank = Math.floor(captureSquare / 8);
+      const captureFile = captureSquare % 8;
+      
+      // Check bounds and ensure we don't wrap around the board
+      if (captureSquare >= 0 && captureSquare < 64 && 
+          Math.abs(currentRank - captureRank) === 1 && 
+          Math.abs(currentFile - captureFile) === 1) {
+        
+        const targetPiece = chessBoard[captureSquare];
+        if (targetPiece !== null && (targetPiece & 24) !== pieceColor) {
+          legalMoves.push(captureSquare);
+        }
       }
     }
 
     // En Passant
-    if (enPassantTarget !== null) {
-      if (captureMoves.includes(enPassantTarget)) {
+    if (enPassantTarget !== null && enPassantTarget >= 0 && enPassantTarget < 64) {
+      const epRank = Math.floor(enPassantTarget / 8);
+      const epFile = enPassantTarget % 8;
+      
+      // Check if en passant target is diagonally adjacent
+      if (Math.abs(currentRank - epRank) === 1 && Math.abs(currentFile - epFile) === 1) {
         legalMoves.push(enPassantTarget);
       }
     }
