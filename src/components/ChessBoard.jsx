@@ -52,7 +52,7 @@ switch (index) {
 }
 }
 
-const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, onSquareClick, isSelected, isLegalMove }) => {
+const Square = ({ color, piece, squareIndex, onSquareClick, isSelected, isLegalMove }) => {
     const squareDimension = "77px"
     const imageSrc = numberToImage(piece)
 
@@ -61,12 +61,10 @@ const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, on
         <div
             className={`square ${isSelected ? 'selected' : ''} ${isLegalMove ? 'legal-move' : ''}`}
             style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension } : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension }}
-            onDrop={() => onDrop(squareIndex)}
-            onDragOver={onDragOver}
             onClick={() => onSquareClick(squareIndex)}
         >
             <h1 style={{ color: "orange" }}>
-                {imageSrc && <img src={imageSrc} width="70%" height="100%" alt="chess piece" onDragStart={() => onDragStart(squareIndex)} />}
+                {imageSrc && <img src={imageSrc} width="70%" height="100%" alt="chess piece" />}
 
             </h1>
 
@@ -74,7 +72,7 @@ const Square = ({ color, piece, onDrop, onDragOver, onDragStart, squareIndex, on
         </div>)
 
 }
-const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, selectedSquare, legalMoves }) => {
+const Chess = ({ chessBoard, onSquareClick, selectedSquare, legalMoves }) => {
     
     console.log(chessBoard)
     const boardVisual = []; 
@@ -101,9 +99,6 @@ const Chess = ({ chessBoard, onDrop, onDragOver, onDragStart, onSquareClick, sel
               color={isLightSquare}
               // Later, you will get the piece from your `chessBoard` prop:
               piece={chessBoard[squareIndex]}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              onDragStart={onDragStart}
               squareIndex={squareIndex}
               onSquareClick={onSquareClick}
               isSelected={selectedSquare === squareIndex}
