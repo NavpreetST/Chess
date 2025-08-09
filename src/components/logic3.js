@@ -25,26 +25,36 @@ const pieceTypeFromSymbol = {
     
 // const fen = "4n2K/3r4/2bB4/3P4/1bk1B1P1/2P1pN2/1p2p3/3n4"
 let chessBoard = Array(64).fill(null)
+const fenParts = fen.split(' ');
+const position = fenParts[0];
+const castlingRights = fenParts[2] || '';
+const enPassantTargetStr = fenParts[3] || '-';
+
+// Convert en passant target from algebraic notation to square index
+let enPassantTarget = null;
+if (enPassantTargetStr !== '-' && enPassantTargetStr.length === 2) {
+  const file = enPassantTargetStr.charCodeAt(0) - 'a'.charCodeAt(0);
+  const rank = parseInt(enPassantTargetStr[1]) - 1;
+  enPassantTarget = rank * 8 + file;
+}
 
 let rank = 7
-const rows = fen.split('/')
-console.log(rows)
+const rows = position.split('/')
+// console.log(rows)
 const rows2 = fen.split('')
-console.log(rows2)
+// console.log(rows2)
 let pieceIndex = 0
 
 
     console.log("this is inside the loop for each time")
 for (const rowString of rows) {
-    console.log(rowString )
+    // console.log(rowString )
      let file = 0
       
     for (const char of rowString ){
-    console.log(`Processing char: '${char}' --- Rank: ${rank}, File: ${file}`);
+    // console.log(`Processing char: '${char}' --- Rank: ${rank}, File: ${file}`);
         
-    // let file = 0
-  // Your code inside the loop goes here.
-  // 'piece' is a variable that will hold each item from 'rows'.
+
   
   if(char == ' '){
       return
@@ -70,7 +80,7 @@ for (const rowString of rows) {
     }
     rank--
 };
-return chessBoard;
+return { chessBoard, castlingRights, enPassantTarget };
 
 }
 

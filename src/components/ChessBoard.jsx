@@ -52,23 +52,27 @@ switch (index) {
 }
 }
 
-const Square = ({color, piece}) => {
+const Square = ({ color, piece, squareIndex, onSquareClick, isSelected, isLegalMove }) => {
     const squareDimension = "77px"
     const imageSrc = numberToImage(piece)
-    
+
     return (
 
-    <div className='square' style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension} : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension}}>
-        <h1 style={{color: "orange"}}>
-        {imageSrc && <img src = {imageSrc} width = "70%" height = "100%" alt = "chess piece"  />}
+        <div
+            className={`square ${isSelected ? 'selected' : ''} ${isLegalMove ? 'legal-move' : ''}`}
+            style={color ? { backgroundColor: "purple", height: squareDimension, width: squareDimension } : { color: "black", backgroundColor: "white", height: squareDimension, width: squareDimension }}
+            onClick={() => onSquareClick(squareIndex)}
+        >
+            <h1 style={{ color: "orange" }}>
+                {imageSrc && <img src={imageSrc} width="70%" height="100%" alt="chess piece" />}
 
-        </h1>
+            </h1>
 
 
-    </div>)
+        </div>)
 
-    }
-const Chess = ({chessBoard}) => {
+}
+const Chess = ({ chessBoard, onSquareClick, selectedSquare, legalMoves }) => {
     
     console.log(chessBoard)
     const boardVisual = []; 
@@ -95,6 +99,10 @@ const Chess = ({chessBoard}) => {
               color={isLightSquare}
               // Later, you will get the piece from your `chessBoard` prop:
               piece={chessBoard[squareIndex]}
+              squareIndex={squareIndex}
+              onSquareClick={onSquareClick}
+              isSelected={selectedSquare === squareIndex}
+              isLegalMove={legalMoves.includes(squareIndex)}
             />
           );
         }

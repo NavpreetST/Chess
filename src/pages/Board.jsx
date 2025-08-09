@@ -2,22 +2,99 @@ import {React, useEffect, useState} from 'react'
 import './Board.css'
 import Chess from '../components/ChessBoard'
 import { LoadPositionFromFen } from '../components/logic3'
+import { getLegalMoves, Piece } from '../components/legalMoves'
 
 const Board = () => {
   const [chessBoard, setChessBoard] = useState(Array(64).fill(null))
-  const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+  const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
   const [activeFen, setActiveFen]= useState(startingFen)
+  const [selectedSquare, setSelectedSquare] = useState(null);
+  const [legalMoves, setLegalMoves] = useState([]);
+  const [castlingRights, setCastlingRights] = useState("");
+  const [enPassantTarget, setEnPassantTarget] = useState(null);
+
+  const handleSquareClick = (squareIndex) => {
+    if (selectedSquare === null) {
+      const piece = chessBoard[squareIndex];
+      console.log(`Clicked square ${squareIndex}, piece: ${piece}`);
+      
+      if (piece !== null) {
+        const moves = getLegalMoves(squareIndex, chessBoard, castlingRights, enPassantTarget);
+        console.log(`Legal moves for piece ${piece} at square ${squareIndex}:`, moves);
+        
+        if (moves.length > 0) {
+          setSelectedSquare(squareIndex);
+          setLegalMoves(moves);
+        }
+      }
+    } else {
+      if (legalMoves.includes(squareIndex)) {
+        const newChessBoard = [...chessBoard];
+        // En Passant
+        if ((newChessBoard[selectedSquare] & 7) === 2 && squareIndex === enPassantTarget) {
+          const capturedPawnIndex = enPassantTarget + ( (newChessBoard[selectedSquare] & 8) === 8 ? 8 : -8);
+          newChessBoard[capturedPawnIndex] = null;
+        }
+
+        // Castling logic
+        if (newChessBoard[selectedSquare] === 9 && Math.abs(selectedSquare - squareIndex) === 2) {
+          if (squareIndex === 62) {
+            newChessBoard[61] = newChessBoard[63];
+            newChessBoard[63] = null;
+          } else if (squareIndex === 58) {
+            newChessBoard[59] = newChessBoard[56];
+            newChessBoard[56] = null;
+          }
+        } else if (newChessBoard[selectedSquare] === 17 && Math.abs(selectedSquare - squareIndex) === 2) {
+          if (squareIndex === 6) {
+            newChessBoard[5] = newChessBoard[7];
+            newChessBoard[7] = null;
+          } else if (squareIndex === 2) {
+            newChessBoard[3] = newChessBoard[0];
+            newChessBoard[0] = null;
+          }
+        }
+
+        const movedPiece = newChessBoard[selectedSquare];
+        const isPawn = (movedPiece & 7) === Piece.Pawn;
+        const isWhite = (movedPiece & 24) === Piece.White;
+
+        // Handle en passant target
+        if (isPawn && Math.abs(selectedSquare - squareIndex) === 16) {
+          setEnPassantTarget(selectedSquare + (isWhite ? -8 : 8));
+        } else {
+          setEnPassantTarget(null);
+        }
+
+        // Handle pawn promotion
+        if (isPawn && ((isWhite && Math.floor(squareIndex / 8) === 0) || (!isWhite && Math.floor(squareIndex / 8) === 7))) {
+          newChessBoard[squareIndex] = isWhite ? (Piece.Queen | Piece.White) : (Piece.Queen | Piece.Black);
+        } else {
+          newChessBoard[squareIndex] = movedPiece;
+        }
+        newChessBoard[selectedSquare] = null;
+        setChessBoard(newChessBoard);
+      }
+      setSelectedSquare(null);
+      setLegalMoves([]);
+    }
+  };
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    const fenStr = activeFen
-    setChessBoard(LoadPositionFromFen(fenStr))
+    const { chessBoard: newBoard, castlingRights: newCastlingRights, enPassantTarget: newEnPassantTarget } = LoadPositionFromFen(activeFen);
+    setChessBoard(newBoard);
+    setCastlingRights(newCastlingRights);
+    setEnPassantTarget(newEnPassantTarget);
   }
 
 
   useEffect(() => {
-    setChessBoard(LoadPositionFromFen(activeFen))
+    const { chessBoard: newBoard, castlingRights: newCastlingRights, enPassantTarget: newEnPassantTarget } = LoadPositionFromFen(activeFen);
+    setChessBoard(newBoard);
+    setCastlingRights(newCastlingRights);
+    setEnPassantTarget(newEnPassantTarget);
     
     
     
@@ -31,7 +108,12 @@ return (
   <div className='main-board'>
       
       {/* {kdt} */}
-      <Chess chessBoard={chessBoard} />
+      <Chess 
+        chessBoard={chessBoard} 
+        onSquareClick={handleSquareClick}
+        selectedSquare={selectedSquare}
+        legalMoves={legalMoves}
+      />
 
       
     </div>
